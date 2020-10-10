@@ -1,0 +1,27 @@
+<mat-form-field class="example-full-width">
+  <mat-label>Category name</mat-label>
+  <input [(ngModel)]="categoryName" autocomplete="off" matInput placeholder="Ex. Pizza">
+</mat-form-field>
+<div *ngIf="isImageUploaded" class="image">
+  <img [src]="imageFile?.info.src" alt="">
+  <div class="image__info">
+      <span class="image__info-name">
+        File name: <strong>{{imageFile?.info.selectedFile.name}}</strong>
+      </span>
+    <span class="image__info-size">
+         File size: <strong>{{imageFile?.info.size}} {{imageFile?.option.sizeFormatOffset}}</strong>
+      </span>
+  </div>
+</div>
+<div class="upload-image">
+  <button (click)="file.click()" mat-button>Select image</button>
+  <input #file (change)="selectImage($event)" [accept]="IMG_FORMATS" class="upload-image__input" multiple type="file">
+</div>
+<ng-template #isImageUploaded>
+</ng-template>
+<div class="control-buttons">
+  <button (click)="closeDialog()" color="warn" mat-raised-button type="button">Close</button>
+  <button (click)="addCategory()" [disabled]="!submitStatus" color="primary" mat-raised-button type="button">Add
+    Category
+  </button>
+</div>
