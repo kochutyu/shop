@@ -6,6 +6,7 @@ import {FileInfo} from './model/file-info.model';
 
 import {IFile} from './interfaces/file.interface';
 import {IFileOption} from './interfaces/file-option.interface';
+import {IFileInfo} from './interfaces/file-info.interface';
 
 export class FilesFactory {
 
@@ -34,16 +35,17 @@ export class FilesFactory {
       reader.onload = (
         (load) => {
           reader.readAsDataURL(load);
-          return (e: any) => this.initFile(e, index, array);
+          return (e: any) => this.initFile(e, load, index, array);
         }
       )(this.files[key]);
     });
     return this.FILES_RESULT$;
   }
 
-  private initFile(event: any, index: number, array: any): void {
+  private initFile(event: any, selectedFile: File, index: number, array: any): void {
     if (event.loaded === event.total) {
-      const file: IFile = new FileModel(event, this.options, new FileInfo(null, event.target.result));
+      const info: IFileInfo = new FileInfo(null, event.target.result, selectedFile);
+      const file: IFile = new FileModel(event, this.options, info);
       this.generateFileList(file);
       this.unsubscribe(index, array);
     }
